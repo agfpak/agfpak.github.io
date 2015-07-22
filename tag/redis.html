@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>mysitename - redis</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">mysitename </a></h1>
+                <nav><ul>
+                    <li><a href="/category/zametki.html">Заметки</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/rq-prostaia-ochered-zadach-na-python.html">RQ — Простая очередь задач на Python</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-01-02T20:20:00+03:00">
+                Published: Fri 02 January 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ajib6ept.html">ajib6ept</a>
+        </address>
+<p>In <a href="/category/zametki.html">Заметки</a>.</p>
+<p>tags: <a href="/tag/repost.html">репост</a> <a href="/tag/python-rq.html">python-rq</a> <a href="/tag/redis.html">redis</a> </p>
+</footer><!-- /.post-info --><p><img alt="RQ — Простая очередь задач на Python" src="images/rq_simple_queue_python.png" /></p>
+<p>Столкнулся недавно с проблемой реализации асинхронной очереди задач на Python. Хотелось найти какое-нибудь простое минималистичное решение, аля написал три строчки кода и все взлетело. Celery по этой причине отпала почти сразу. Немного погуглив нашел такое решение: python-rq. В этом топике я хочу рассмотреть основные приципы работы этой очереди задач.</p>
+<h3>Установка</h3>
+<p>Ставится стандартно, так как брокером для данной очереди служит редис, ставим его:</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install redis-server
+</pre></div>
+
+
+<p>ставим саму очередь</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo pip install rq
+</pre></div>
+
+
+<h3>Создание простого таска</h3>
+<p>Итак, у нас есть два понятия:</p>
+<ul>
+<li><strong>задание</strong> — функция, которую мы хотим выполнить</li>
+<li><strong>воркер</strong> — отдельный процесс, который получает через Redis pickle-сериализованную функцию и выполняет ее.</li>
+</ul>
+<p>Воркер запускается командой</p>
+<div class="highlight"><pre><span class="nv">$ </span>rqworker
+</pre></div>
+
+
+<p>и работает на протяжении всех следующих примеров.</p>
+<h5>Пример 1</h5>
+<p>Файл main.py:</p>
+<div class="highlight"><pre><span class="c">#-- coding: utf-8 --</span>
+<span class="kn">from</span> <span class="nn">rq</span> <span class="kn">import</span> <span class="n">Queue</span>
+<span class="kn">from</span> <span class="nn">redis</span> <span class="kn">import</span> <span class="n">Redis</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">sleep_</span><span class="p">):</span>
+    <span class="c"># спим sleep_ секунд и возвращаем ok</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">&quot;ok&quot;</span>
+
+<span class="c"># создаем очередь</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="s">&quot;high&quot;</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">Redis</span><span class="p">())</span>
+
+
+<span class="c"># помещаем таск в очередь</span>
+<span class="n">job</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="c"># таск еще не успел выполниться - результата нет</span>
+<span class="k">print</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c"># получили результат</span>
+<span class="k">print</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span>
+</pre></div>
+
+
+<p>Функция Queue создает очередь. В качестве параметра connection мы передали соединение с Redis’ом по умолчанию. После создания очереди мы можем помещать в нее функции, которые будут выполняться воркером. Первый параметр передаваемый в очередь — ее имя. Оно может быть произвольным. Чтобы настроить воркер на слушание именнованной очереди, просто передаем имя очереди параметром:</p>
+<div class="highlight"><pre>rqworker high q1 q2
+</pre></div>
+
+
+<p>будет слушать очереди <strong>high</strong>, <strong>q1</strong>, <strong>q2</strong></p>
+<p>Пробуем запустить таск и получаем:</p>
+<div class="highlight"><pre>stas@stas-Aspire-Z3620:~/workspace/partners/rq_test<span class="nv">$ </span>python main.py 
+Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+  File <span class="s2">&quot;main.py&quot;</span>, line 17, in 
+    <span class="nv">job</span> <span class="o">=</span> q.enqueue<span class="o">(</span>task, 1<span class="o">)</span>
+  File <span class="s2">&quot;/usr/local/lib/python2.7/dist-packages/rq/queue.py&quot;</span>, line 161, in enqueue
+    <span class="s1">&#39;Functions from the main module cannot be processed &#39;</span>
+ValueError: Functions from the main module cannot be processed by workers.
+</pre></div>
+
+
+<p>Это связано с методом выполнения воркером тасков. Воркер пытается подгрузить модуль, определенный в function.__module__. Для функций из текущего модуля это __main__, поэтому рейзится ошибка. Вроде в будущих версиях планируют как то с этим справиться.</p>
+<p>Поэтому <strong>таск должен всегда быть импортирован из другого модуля</strong></p>
+<h5>Пример 2</h5>
+<p>Перенесем код таска в другой модуль.</p>
+<p>Файл task.py</p>
+<div class="highlight"><pre><span class="c">#-- coding: utf-8 --</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">sleep</span><span class="p">):</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">&quot;ok&quot;</span>
+</pre></div>
+
+
+<p>Файл main.py</p>
+<div class="highlight"><pre><span class="c">#-- coding: utf-8 --</span>
+<span class="kn">from</span> <span class="nn">rq</span> <span class="kn">import</span> <span class="n">Queue</span>
+<span class="kn">from</span> <span class="nn">redis</span> <span class="kn">import</span> <span class="n">Redis</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">tasks</span> <span class="kn">import</span> <span class="n">task</span>
+
+<span class="c"># создаем очередь</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">Redis</span><span class="p">())</span>
+
+
+<span class="c"># помещаем таск в очередь</span>
+<span class="n">j1</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+<span class="n">j2</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+<span class="n">j3</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
+
+<span class="c"># таск еще не успел выполниться - результата нет</span>
+<span class="k">print</span> <span class="n">j1</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">j2</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">j3</span><span class="o">.</span><span class="n">result</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="c"># получили результат</span>
+<span class="k">print</span> <span class="n">j1</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">j2</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">j3</span><span class="o">.</span><span class="n">result</span>
+</pre></div>
+
+
+<p>Запускаем воркер и main.py.</p>
+<p>Лог воркера:</p>
+<div class="highlight"><pre><span class="o">(</span>env<span class="o">)</span>stas@stas-Aspire-Z3620:~/workspace/partners/rq_test<span class="nv">$ </span>rqworker -v
+22:49:50 Registering birth of worker stas-Aspire-Z3620.10909
+22:49:50 RQ worker started, version 0.4.6
+22:49:50 
+22:49:50  Listening on default...
+22:49:50 Sent heartbeat to prevent worker timeout. Next one should arrive within <span class="m">420</span> seconds.
+22:49:51 default: tasks.task<span class="o">()</span> <span class="o">(</span>bf60bdd5-3f74-4571-8a96-ead1773af3c4<span class="o">)</span>
+22:49:51 Sent heartbeat to prevent worker timeout. Next one should arrive within <span class="m">420</span> seconds.
+22:49:51 Sent heartbeat to prevent worker timeout. Next one should arrive within <span class="m">420</span> seconds.
+22:49:52 Job OK, <span class="nv">result</span> <span class="o">=</span> ok
+22:49:52 Result is kept <span class="k">for</span> <span class="m">500</span> seconds.
+22:49:52 Sent heartbeat to prevent worker timeout. Next one should arrive within <span class="m">420</span> seconds.
+22:49:52 
+22:49:52  Listening on default...
+22:49:52 Sent heartbeat to prevent worker timeout. Next one should arrive within <span class="m">420</span> seconds.
+22:49:52 default: tasks.task<span class="o">()</span> <span class="o">(</span>4022a414-3eaa-41c2-95db-562869a48ac8<span class="o">)</span>
+22:49:52 Sent heartbeat to prevent worker timeout. Next one should arrive within <span class="m">420</span> seconds.
+22:49:52 Sent heartbeat to prevent worker timeout. Next one should arrive within <span class="m">420</span> seconds.
+22:49:53 Job OK, <span class="nv">result</span> <span class="o">=</span> ok
+22:49:53 Result is kept <span class="k">for</span> <span class="m">500</span> seconds.
+22:49:53 Sent heartbeat to prevent worker timeout. Next one should arrive within <span class="m">420</span> seconds.
+22:49:53 
+22:49:53  Listening on default...
+22:49:53 Sent heartbeat to prevent worker timeout. Next one should arrive within <span class="m">420</span> seconds.
+22:49:53 default: tasks.task<span class="o">()</span> <span class="o">(</span>2ceef550-44e9-44a6-8b41-0f4032678d7f<span class="o">)</span>
+22:49:53 Sent heartbeat to prevent worker timeout. Next one should arrive within <span class="m">420</span> seconds.
+22:49:53 Sent heartbeat to prevent worker timeout. Next one should arrive within <span class="m">420</span> seconds.
+22:49:54 Job OK, <span class="nv">result</span> <span class="o">=</span> ok
+22:49:54 Result is kept <span class="k">for</span> <span class="m">500</span> seconds.
+22:49:54 Sent heartbeat to prevent worker timeout. Next one should arrive within <span class="m">420</span> seconds.
+22:49:54 
+22:49:54  Listening on default...
+</pre></div>
+
+
+<p>Лог main.py:</p>
+<div class="highlight"><pre>stas@stas-Aspire-Z3620:~/workspace/partners/rq_test<span class="nv">$ </span>python main.py 
+None None None
+ok ok ok
+</pre></div>
+
+
+<h3>Запуск нескольких воркеров</h3>
+<p>К сожалению сейчас каждый воркер работает в один поток. То есть один воркер поддерживает только одну очередь заданий. Исправил я это запуском каждого воркера в отдельном процессе:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">RQQueueManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="n">_QUEUES</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">_EXCEPTION_HANDLERS</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">preload_modules</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        В этой функции нужно выполнить предзагрузку всех необходимых модулей</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">qname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Добавляет одну очередь в список</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">qname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">_QUEUES</span><span class="p">:</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">_QUEUES</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qname</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">QueueException</span><span class="p">(</span><span class="s">&quot;This queue already added&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">add_exception_handler</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Добавляет обработчик ошибок воркеров. Каждый обработчик имеет сигнатуру::</span>
+
+<span class="sd">            def my_handler(job, exc_type, exc_value, traceback):</span>
+<span class="sd">                # do custom things here</span>
+<span class="sd">                # for example, write the exception info to a DB</span>
+<span class="sd">                ...</span>
+
+<span class="sd">        Подробнее см. http://python-rq.org/docs/exceptions/</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">_EXCEPTION_HANDLERS</span> <span class="o">+=</span> <span class="p">[</span><span class="n">callback</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">qname</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_QUEUES</span><span class="p">[</span><span class="n">qname</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">as_script</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Вызовите этот метод для запуска воркеров.</span>
+
+<span class="sd">        При этом на каждую зарегестрированную очередь запускается один воркер</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">rq</span> <span class="kn">import</span> <span class="n">Queue</span><span class="p">,</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">Worker</span>
+
+        <span class="k">def</span> <span class="nf">run_one_worker</span><span class="p">(</span><span class="n">qname</span><span class="p">):</span>
+            <span class="n">cls</span><span class="o">.</span><span class="n">preload_modules</span><span class="p">()</span>
+            <span class="k">with</span> <span class="n">Connection</span><span class="p">():</span>
+                <span class="n">qs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Queue</span><span class="p">(</span><span class="n">qname</span><span class="p">)]</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">Worker</span><span class="p">(</span><span class="n">qs</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">_EXCEPTION_HANDLERS</span><span class="p">:</span>
+                    <span class="n">w</span><span class="o">.</span><span class="n">push_exc_handler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+
+                <span class="n">w</span><span class="o">.</span><span class="n">work</span><span class="p">()</span>
+
+        <span class="n">processes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">run_one_worker</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">qname</span><span class="p">,))</span>
+                     <span class="k">for</span> <span class="n">qname</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">_QUEUES</span><span class="p">]</span>
+
+        <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pr</span><span class="p">:</span> <span class="n">pr</span><span class="o">.</span><span class="n">start</span><span class="p">(),</span> <span class="n">processes</span><span class="p">)</span>
+        <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pr</span><span class="p">:</span> <span class="n">pr</span><span class="o">.</span><span class="n">join</span><span class="p">(),</span> <span class="n">processes</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Пример использования:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">do_nothinf_exception_handler</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="c">#do none</span>
+    <span class="k">pass</span>
+
+<span class="p">:::</span><span class="n">python</span>
+<span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;main&quot;</span><span class="p">:</span>
+    <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">add_exception_handler</span><span class="p">(</span><span class="n">do_nothinf_exception_handler</span><span class="p">)</span>
+    <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;high&quot;</span><span class="p">)</span>
+    <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;mid&quot;</span><span class="p">)</span>
+    <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;low&quot;</span><span class="p">)</span>
+    <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">as_script</span><span class="p">()</span>
+</pre></div>
+
+
+<h3>Помещение в очередь произвольного класса</h3>
+<p>Передо мной встала задача — есть абстрактный класс Task. Каждый конерктный таск должен наследоваться от этого класса. У Task есть метод main — основной метод выполняющий все действия и метод \push_in_queue который должен помещать main текущего класса в очередь заданий.</p>
+<p>Если попробовать выполнить что то в стиле:</p>
+<div class="highlight"><pre><span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">ConcreteClass</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
+</pre></div>
+
+
+<p>получим ошибку pickle. Решить эту проблему получилось следующим образом:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Task</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<span class="n">EXECUTOR</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># должно быть перегружено</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="o">...</span>
+
+<span class="k">def</span> <span class="nf">push_in_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">EXECUTOR</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">run_concrete_executor</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">ConcreteTask</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">ConcreteTask</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+
+<span class="nd">@property</span>
+<span class="k">def</span> <span class="nf">EXECUTOR</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">run_concrete_executor</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c"># doAction</span>
+</pre></div>
+
+
+<p>Итак, для каждого конкретного класса таска пришлось создать функцию, выполняющую этот таск, и привязать ее к самому таску. Если кто то знает более элегантное решение — прошу подсказать)</p>
+<p>Первоисточник: <a href="http://staskaledin.ru/blog/12" target="_blank">http://staskaledin.ru/blog/12</a></p>                </article>
+<p class="paginator">
+    Page 1 / 1
+</p>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+        <meta charset="utf-8" />
+        <title>mysitename - Заметки</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">mysitename </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="/category/zametki.html">Заметки</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/ustanovka-mongodb-na-windows-kratkaia-instruktsiia-bystryi-start.html">Установка MongoDB на Windows — Краткая инструкция, быстрый старт</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2015-06-07T20:20:00+03:00">
+                Published: Sun 07 June 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ajib6ept.html">ajib6ept</a>
+        </address>
+<p>In <a href="/category/zametki.html">Заметки</a>.</p>
+<p>tags: <a href="/tag/mongo.html">mongo</a> <a href="/tag/mongodb.html">mongodb</a> <a href="/tag/windows.html">windows</a> </p>
+</footer><!-- /.post-info --><p><img alt="Установка MongoDB на Windows — Краткая инструкция, быстрый старт" src="images/install_mongodb_windows.png" /></p>
+<ol>
+<li>
+<p>Скачиваем и с сайта диструбтив https://www.mongodb.org/downloads и устанавливаем его.</p>
+</li>
+<li>
+<p>Добавляем в переменные окружения Windows путь к исполняемым файлам установленной базы (C:\Program Files\MongoDB\Server\3.0\bin)</p>
+</li>
+<li>
+<p>Создаем две папки командой в терминале «md \data» и «md \data\db»</p>
+</li>
+<li>
+<p>Базу данных запускаем из терминала командой mongod</p>
+</li>
+</ol>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/error-you-need-to-install-postgresql-server-dev-xy-for-building-a-server-side-extension-or-libpq-dev-for-building-a-client-side-application.html" rel="bookmark"
+                           title="Permalink to Error: You need to install postgresql-server-dev-X.Y for building a server-side extension or libpq-dev for building a client-side application">Error: You need to install postgresql-server-dev-X.Y for building a server-side extension or libpq-dev for building a client-side application</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-02-10T20:20:00+03:00">
+                Published: Tue 10 February 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ajib6ept.html">ajib6ept</a>
+        </address>
+<p>In <a href="/category/zametki.html">Заметки</a>.</p>
+<p>tags: <a href="/tag/postgres.html">Postgres</a> <a href="/tag/psycopg2.html">psycopg2</a> <a href="/tag/virtualenv.html">virtualenv</a> </p>
+</footer><!-- /.post-info -->                <p><img alt="Error: You need to install postgresql-server-dev-X.Y for building a server-side extension or libpq-dev for building a client-side application" src="images/psycopg2_error.png" /></p>
+<p>Альтернативная установка psycopg2 в virtualenv для Postgres.</p>
+<p>Устанавливаем psycopg не в окружении через</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo pip install psycopg2
+</pre></div>
+
+
+<p>Смотрим куда это встало</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo python -c <span class="s2">&quot;import psycopg2;print psycopg2.__file__&quot;</span>
+<span class="nv">$ </span>/usr/lib/python2.7/dist-packages/psycopg2/__init__.pyc
+</pre></div>
+
+
+<p>И копируем к себе в lib’ы в virtualenv</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo cp -r /usr ...</pre></div>
+                <a class="readmore" href="/error-you-need-to-install-postgresql-server-dev-xy-for-building-a-server-side-extension-or-libpq-dev-for-building-a-client-side-application.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/rq-prostaia-ochered-zadach-na-python.html" rel="bookmark"
+                           title="Permalink to RQ — Простая очередь задач на Python">RQ — Простая очередь задач на Python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2015-01-02T20:20:00+03:00">
+                Published: Fri 02 January 2015
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ajib6ept.html">ajib6ept</a>
+        </address>
+<p>In <a href="/category/zametki.html">Заметки</a>.</p>
+<p>tags: <a href="/tag/repost.html">репост</a> <a href="/tag/python-rq.html">python-rq</a> <a href="/tag/redis.html">redis</a> </p>
+</footer><!-- /.post-info -->                <p><img alt="RQ — Простая очередь задач на Python" src="images/rq_simple_queue_python.png" /></p>
+<p>Столкнулся недавно с проблемой реализации асинхронной очереди задач на Python. Хотелось найти какое-нибудь простое минималистичное решение, аля написал три строчки кода и все взлетело. Celery по этой причине отпала почти сразу. Немного погуглив нашел такое решение: python-rq. В этом топике я хочу рассмотреть основные приципы работы этой очереди задач.</p>
+<h3>Установка ...</h3>
+                <a class="readmore" href="/rq-prostaia-ochered-zadach-na-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/django-17-nginx-uwsgi-ubuntu-1404.html" rel="bookmark"
+                           title="Permalink to Django 1.7 + nginx + uwsgi + Ubuntu 14.04">Django 1.7 + nginx + uwsgi + Ubuntu 14.04</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-12-18T20:20:00+03:00">
+                Published: Thu 18 December 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ajib6ept.html">ajib6ept</a>
+        </address>
+<p>In <a href="/category/zametki.html">Заметки</a>.</p>
+<p>tags: <a href="/tag/django.html">Django</a> <a href="/tag/nginx.html">nginx</a> <a href="/tag/ubuntu.html">Ubuntu</a> <a href="/tag/uwsgi.html">uwsgi</a> </p>
+</footer><!-- /.post-info -->                <p>Сперва обновим систему и установим необходимые пакеты</p>
+<div class="highlight"><pre><span class="c"># apt-get update &amp;&amp; apt-get -y upgrade</span>
+<span class="c"># apt-get install -y mc nginx python-dev python-pip uwsgi-plugin-python python-virtualenv supervisor python-pip git-core</span>
+</pre></div>
+
+
+<p>Создадим папку, где будет храниться наш проект. Все будет выглядеть примерно так</p>
+<div class="highlight"><pre>.
+└── first
+├── deploy
+├── env
+├── static
+└── testprj
+</pre></div>
+
+
+<p>Создадим папку</p>
+<div class="highlight"><pre><span class="c"># mkdir -p /home/web/first/ &amp;&amp; cd /home ...</span></pre></div>
+                <a class="readmore" href="/django-17-nginx-uwsgi-ubuntu-1404.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+<p class="paginator">
+    Page 1 / 1
+</p>
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
