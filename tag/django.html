@@ -1,166 +1,218 @@
-﻿﻿<!DOCTYPE html>
-<!--[if IE 8 ]><html class="ie ie8" lang="ru"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!-->
+<!DOCTYPE html>
 <html lang="ru">
-<!--<![endif]-->
-	<head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-        <meta name="author" content="agfpak">
+<head>
+        <meta charset="utf-8" />
+        <title>mysitename - Django</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
 
-
-        <title>mysitename - Tag Django</title>
-
-
-        <!-- CSS -->
-        <link rel="stylesheet" href="/theme/css/style.css">
-
-        <!-- Custom CSS -->
-        	<link rel="stylesheet" href="/theme/css/colors/blue.css" id="colors">
-
-        <!-- Code highlight color scheme -->
-            <link href="/theme/css/code_blocks/darkly.css" rel="stylesheet">
-
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+</head>
 
-                <meta property="og:locale" content="">
-		<meta property="og:site_name" content="mysitename">
-	</head>
-	<body>
-		<header id="header">
-			<!-- Container -->
-			<div class="container">
-				<!-- Logo / Mobile Menu -->
-				<div class="three columns">
-					<div id="logo">
-						<h1><a href="/">mysitename</a></h1>
-					</div>
-				</div>
-				<!-- Navigation
-				================================================== -->
-				<div class="thirteen columns">
-					
-					<nav id="navigation" class="menu">
-						<ul id="responsive">
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">mysitename </a></h1>
+                <nav><ul>
+                    <li><a href="/category/zametki.html">Заметки</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
 
-							<li><a href="/">Home</a></li>
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/django-17-nginx-uwsgi-ubuntu-1404.html">Django 1.7 + nginx + uwsgi + Ubuntu 14.04</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2014-12-18T20:20:00+03:00">
+                Published: Thu 18 December 2014
+        </abbr>
 
-
-						</ul>
-					</nav>
-				</div>
-			</div>
-			<!-- Container / End -->
-		</header>
-		<!-- Header / End -->
-		
-		<div id="content-wrapper">
-			<section id="titlebar">
-				<!-- Container -->
-				<div class="container">
-					<div class="sixteen columns">						
-						<nav id="breadcrumbs">
-							<ul>
-								<li>You are here:</li>
-								<li><a href="/">Home</a></li>
-<li><a href="/tags">Tags</a></li>
-<li>Django</li>
-							</ul>
-						</nav>
-					</div>
-
-				</div>
-				<!-- Container / End -->
-			</section>
-
-			<div class="container">
-	<div class="twelve alt columns">
-		<!-- Post -->
-		<article class="post medium">
-			<div class="twelve columns">
-				<section class="post-content">
-					<header class="meta">
-						<h2><a href="/django-17-nginx-uwsgi-ubuntu-1404.html" rel="bookmark" title="Permalink to Django 1.7 + nginx + uwsgi + Ubuntu 14.04">Django 1.7 + nginx + uwsgi + Ubuntu 14.04</a></h2>
-						<ul>
-							<li>By <a href="/author/agfpak.html">agfpak</a></li>
-							<li>Thu 18 December 2014</li>
-							<li><a href="/category/Заметки">Заметки</a></li>
-						</ul>
-					</header>
-					<p>
-							<p>Сперва обновим систему и установим необходимые пакеты</p>
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/agfpak.html">agfpak</a>
+        </address>
+<p>In <a href="/category/zametki.html">Заметки</a>.</p>
+<p>tags: <a href="/tag/django.html">Django</a> <a href="/tag/nginx.html">nginx</a> <a href="/tag/ubuntu.html">Ubuntu</a> <a href="/tag/uwsgi.html">uwsgi</a> </p>
+</footer><!-- /.post-info --><p>Сперва обновим систему и установим необходимые пакеты</p>
 <div class="highlight"><pre><span></span><span class="c1"># apt-get update &amp;&amp; apt-get -y upgrade</span>
-<span class="c1"># apt-get install -y mc nginx python-dev python-pip uwsgi-plugin-python ...
-	        		</p>
-					<a href="/django-17-nginx-uwsgi-ubuntu-1404.html" class="button color">Read More</a>
-				</section>
-			</div>
-			<div class="clearfix"></div>
-		</article>
-
-	<!-- Pagination -->
-	<nav class="pagination">
-		<ul>
-			<li>
-			</li>
-			<!-- Page 1 / 1 -->
-		</ul>
-		<div class="clearfix"></div>
-	</nav>
-	</div>
-
-	<!-- Sidebar -->
-	<div class="four columns">
-
-		
-	</div>
-			</div>
-			<!-- Container / End -->
-		</div>
-		<!-- Content Wrapper / End -->
+<span class="c1"># apt-get install -y mc nginx python-dev python-pip uwsgi-plugin-python python-virtualenv supervisor python-pip git-core</span>
+</pre></div>
 
 
-		<div id="footer-bottom">
-			<!-- Container -->
-			<div class="container">
-				<div class="eight columns">Blog powered by <a href="http://getpelican.com">Pelican</a></div>
-					<div class="eight columns">
-						<ul class="social-icons-footer">
-								<li>
-									<a href="#" class="tooltip top" title="You can add links in your config file">
-										<i class="icon-you can add links in your config file"></i>
-									</a>
-								</li>
-								<li>
-									<a href="#" class="tooltip top" title="Another social link">
-										<i class="icon-another social link"></i>
-									</a>
-								</li>
-							<li><a href="/None" class="tooltip top" title="RSS"><i class="icon-rss"></i></a></li>
-						</ul>
-					</div>
-			</div>
-			<!-- Container / End -->
-		</div>
-		<!-- Footer Bottom / End -->
-		
-	<!-- Javascripts -->
-	<script src="/theme/js/jquery.min.js"></script>
+<p>Создадим папку, где будет храниться наш проект. Все будет выглядеть примерно так</p>
+<div class="highlight"><pre><span></span>.
+└── first
+├── deploy
+├── env
+├── static
+└── testprj
+</pre></div>
+
+
+<p>Создадим папку</p>
+<div class="highlight"><pre><span></span><span class="c1"># mkdir -p /home/web/first/ &amp;&amp; cd /home/web/first/</span>
+</pre></div>
+
+
+<p>Активируем виртуальное окружение и устанавливаем django</p>
+<div class="highlight"><pre><span></span><span class="c1"># virtualenv -p python2.7 env</span>
+<span class="c1"># source env/bin/activate</span>
+<span class="c1"># pip install django</span>
+<span class="c1"># pip install uwsgi</span>
+<span class="c1"># django-admin.py startproject testprj</span>
+</pre></div>
+
+
+<p>создаем недостающие каталоги</p>
+<div class="highlight"><pre><span></span><span class="c1"># mkdir /home/web/first/static</span>
+<span class="c1"># mkdir /home/web/first/deploy &amp;&amp; cd /home/web/first/deploy</span>
+</pre></div>
+
+
+<p>задаем конфиг nginx</p>
+<div class="highlight"><pre><span></span><span class="c1">#testprj.nginx</span>
+server <span class="o">{</span>
+
+        listen 80<span class="p">;</span>
+        server_name localhost<span class="p">;</span>
+        access_log /var/log/nginx/nginx-testprj-access.log<span class="p">;</span>
+        error_log /var/log/nginx/nginx-testprj-error.log<span class="p">;</span>
+
+        root /home/web/first/testprj/<span class="p">;</span>
+
+        location / <span class="o">{</span>
+            try_files <span class="nv">$uri</span> /static/<span class="nv">$uri</span>
+            @django_uwsgi<span class="p">;</span>
+        <span class="o">}</span>
+
+        location @django_uwsgi <span class="o">{</span>
+            uwsgi_pass 127.0.0.1:3031<span class="p">;</span>
+            include uwsgi_params<span class="p">;</span>
+        <span class="o">}</span>
+
+        location /static/ <span class="o">{</span>
+            <span class="nb">alias</span> /home/web/first/static/<span class="p">;</span>
+        <span class="o">}</span>  
+<span class="o">}</span>
+</pre></div>
+
+
+<p>Делаем симлинки и удаляем настройки по умолчанию</p>
+<div class="highlight"><pre><span></span><span class="c1"># ln -s /home/web/first/deploy/testprj.nginx /etc/nginx/sites-available/testprj</span>
+<span class="c1"># ln -s /home/web/first/deploy/testprj.nginx /etc/nginx/sites-enabled/testprj</span>
+<span class="c1"># rm -rf /etc/nginx/sites-available/default</span>
+<span class="c1"># rm -rf /etc/nginx/sites-enabled/default</span>
+</pre></div>
+
+
+<p>создаем дополнительный файл настроек django_wsgi.py</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+
+<span class="c1"># Python/Django location</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;/home/web/first/env/&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/home/web/first/env/lib/python2.7/site-packages&#39;</span><span class="p">)</span>
+<span class="c1"># Project Location</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;/home/web/first/testprj/&#39;</span><span class="p">)</span>
+
+<span class="c1"># Project configuration file</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;testprj.settings&#39;</span>
+<span class="kn">from</span> <span class="nn">django.core.wsgi</span> <span class="kn">import</span> <span class="n">get_wsgi_application</span>
+<span class="n">application</span> <span class="o">=</span> <span class="n">get_wsgi_application</span><span class="p">()</span>
+</pre></div>
+
+
+<p>и еще один django_nginx.xml</p>
+<div class="highlight"><pre><span></span><span class="nt">&lt;uwsgi&gt;</span>
+    <span class="nt">&lt;socket&gt;</span>127.0.0.1:3031<span class="nt">&lt;/socket&gt;</span>
+    <span class="nt">&lt;pythonpath&gt;</span>/home/web/first/deploy<span class="nt">&lt;/pythonpath&gt;</span>
+    <span class="nt">&lt;module&gt;</span>django_wsgi<span class="nt">&lt;/module&gt;</span>
+<span class="nt">&lt;/uwsgi&gt;</span>
+</pre></div>
+
+
+<p>Рестартуем Nginx</p>
+<div class="highlight"><pre><span></span><span class="c1"># /etc/init.d/nginx restart</span>
+</pre></div>
+
+
+<p>Теперь настало время проверить корректность настроек и после запуска команды</p>
+<div class="highlight"><pre><span></span><span class="c1"># uwsgi -x /home/web/first/deploy/django_nginx.xml</span>
+</pre></div>
+
+
+<p>Необходимо перейти по Ip адресу сервера, и мы должны увидеть «заглушку» It worked!</p>
+<p>Настроем автоматический запуск через supervisor (nano /etc/supervisor/conf.d/uwsgi_testprj.conf)</p>
+<div class="highlight"><pre><span></span><span class="o">[</span>program:uwsgi_testprj<span class="o">]</span>
+<span class="nv">command</span><span class="o">=</span>/home/web/first/deploy/uwsgi_testprj.sh
+<span class="nv">directory</span><span class="o">=</span>/home/web/first/
+<span class="nv">autostart</span><span class="o">=</span><span class="nb">true</span>
+<span class="nv">autorestart</span><span class="o">=</span><span class="nb">true</span>
+<span class="nv">redirect_stderr</span><span class="o">=</span><span class="nb">true</span>
+</pre></div>
+
+
+<p>nano /home/web/first/deploy/uwsgi_testprj.sh</p>
+<div class="highlight"><pre><span></span><span class="ch">#! /bin/bash</span>
+<span class="nb">source</span> /home/web/first/env/bin/activate
+<span class="nb">exec</span> uwsgi -x /home/web/first/deploy/django_nginx.xml
+</pre></div>
+
+
+<p>Даем права запуск</p>
+<div class="highlight"><pre><span></span><span class="c1"># chmod +x /home/web/first/deploy/uwsgi_testprj.sh</span>
+</pre></div>
+
+
+<p>Перезапускаем и проверяем</p>
+<div class="highlight"><pre><span></span><span class="c1"># supervisorctl reread</span>
+<span class="c1"># supervisorctl update</span>
+<span class="c1"># supervisorctl start all</span>
+</pre></div>
+
+
+<p>В админке могут не подняться стили (статические файлы) для этого прописываем в settings.py</p>
+<div class="highlight"><pre><span></span><span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="s2">&quot;/home/web/first/static&quot;</span>
+</pre></div>
+
+
+<p>И выполняем</p>
+<div class="highlight"><pre><span></span><span class="c1">#python manage.py collectstatic</span>
+</pre></div><p>There are <a href="/django-17-nginx-uwsgi-ubuntu-1404.html#disqus_thread">comments</a>.</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
 <script type="text/javascript">
     var disqus_shortname = 'agfpak';
     (function () {
         var s = document.createElement('script'); s.async = true;
         s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
         (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
     }());
 </script>
-	</body>
+</body>
 </html>
