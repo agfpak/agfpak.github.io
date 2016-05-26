@@ -27,18 +27,18 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/ajib6ept.html">ajib6ept</a>
+                By                         <a class="url fn" href="/author/agfpak.html">agfpak</a>
         </address>
 <p>In <a href="/category/zametki.html">Заметки</a>.</p>
 <p>tags: <a href="/tag/django.html">Django</a> <a href="/tag/nginx.html">nginx</a> <a href="/tag/ubuntu.html">Ubuntu</a> <a href="/tag/uwsgi.html">uwsgi</a> </p>
 </footer><!-- /.post-info --><p>Сперва обновим систему и установим необходимые пакеты</p>
-<div class="highlight"><pre><span class="c"># apt-get update &amp;&amp; apt-get -y upgrade</span>
-<span class="c"># apt-get install -y mc nginx python-dev python-pip uwsgi-plugin-python python-virtualenv supervisor python-pip git-core</span>
+<div class="highlight"><pre><span></span><span class="c1"># apt-get update &amp;&amp; apt-get -y upgrade</span>
+<span class="c1"># apt-get install -y mc nginx python-dev python-pip uwsgi-plugin-python python-virtualenv supervisor python-pip git-core</span>
 </pre></div>
 
 
 <p>Создадим папку, где будет храниться наш проект. Все будет выглядеть примерно так</p>
-<div class="highlight"><pre>.
+<div class="highlight"><pre><span></span>.
 └── first
 ├── deploy
 ├── env
@@ -48,27 +48,27 @@
 
 
 <p>Создадим папку</p>
-<div class="highlight"><pre><span class="c"># mkdir -p /home/web/first/ &amp;&amp; cd /home/web/first/</span>
+<div class="highlight"><pre><span></span><span class="c1"># mkdir -p /home/web/first/ &amp;&amp; cd /home/web/first/</span>
 </pre></div>
 
 
 <p>Активируем виртуальное окружение и устанавливаем django</p>
-<div class="highlight"><pre><span class="c"># virtualenv -p python2.7 env</span>
-<span class="c"># source env/bin/activate</span>
-<span class="c"># pip install django</span>
-<span class="c"># pip install uwsgi</span>
-<span class="c"># django-admin.py startproject testprj</span>
+<div class="highlight"><pre><span></span><span class="c1"># virtualenv -p python2.7 env</span>
+<span class="c1"># source env/bin/activate</span>
+<span class="c1"># pip install django</span>
+<span class="c1"># pip install uwsgi</span>
+<span class="c1"># django-admin.py startproject testprj</span>
 </pre></div>
 
 
 <p>создаем недостающие каталоги</p>
-<div class="highlight"><pre><span class="c"># mkdir /home/web/first/static</span>
-<span class="c"># mkdir /home/web/first/deploy &amp;&amp; cd /home/web/first/deploy</span>
+<div class="highlight"><pre><span></span><span class="c1"># mkdir /home/web/first/static</span>
+<span class="c1"># mkdir /home/web/first/deploy &amp;&amp; cd /home/web/first/deploy</span>
 </pre></div>
 
 
 <p>задаем конфиг nginx</p>
-<div class="highlight"><pre><span class="c">#testprj.nginx</span>
+<div class="highlight"><pre><span></span><span class="c1">#testprj.nginx</span>
 server <span class="o">{</span>
 
         listen 80<span class="p">;</span>
@@ -96,31 +96,31 @@ server <span class="o">{</span>
 
 
 <p>Делаем симлинки и удаляем настройки по умолчанию</p>
-<div class="highlight"><pre><span class="c"># ln -s /home/web/first/deploy/testprj.nginx /etc/nginx/sites-available/testprj</span>
-<span class="c"># ln -s /home/web/first/deploy/testprj.nginx /etc/nginx/sites-enabled/testprj</span>
-<span class="c"># rm -rf /etc/nginx/sites-available/default</span>
-<span class="c"># rm -rf /etc/nginx/sites-enabled/default</span>
+<div class="highlight"><pre><span></span><span class="c1"># ln -s /home/web/first/deploy/testprj.nginx /etc/nginx/sites-available/testprj</span>
+<span class="c1"># ln -s /home/web/first/deploy/testprj.nginx /etc/nginx/sites-enabled/testprj</span>
+<span class="c1"># rm -rf /etc/nginx/sites-available/default</span>
+<span class="c1"># rm -rf /etc/nginx/sites-enabled/default</span>
 </pre></div>
 
 
 <p>создаем дополнительный файл настроек django_wsgi.py</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
 
-<span class="c"># Python/Django location</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;/home/web/first/env/&#39;</span><span class="p">)</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#39;/home/web/first/env/lib/python2.7/site-packages&#39;</span><span class="p">)</span>
-<span class="c"># Project Location</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;/home/web/first/testprj/&#39;</span><span class="p">)</span>
+<span class="c1"># Python/Django location</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;/home/web/first/env/&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;/home/web/first/env/lib/python2.7/site-packages&#39;</span><span class="p">)</span>
+<span class="c1"># Project Location</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;/home/web/first/testprj/&#39;</span><span class="p">)</span>
 
-<span class="c"># Project configuration file</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;testprj.settings&#39;</span>
+<span class="c1"># Project configuration file</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;DJANGO_SETTINGS_MODULE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;testprj.settings&#39;</span>
 <span class="kn">from</span> <span class="nn">django.core.wsgi</span> <span class="kn">import</span> <span class="n">get_wsgi_application</span>
 <span class="n">application</span> <span class="o">=</span> <span class="n">get_wsgi_application</span><span class="p">()</span>
 </pre></div>
 
 
 <p>и еще один django_nginx.xml</p>
-<div class="highlight"><pre><span class="nt">&lt;uwsgi&gt;</span>
+<div class="highlight"><pre><span></span><span class="nt">&lt;uwsgi&gt;</span>
     <span class="nt">&lt;socket&gt;</span>127.0.0.1:3031<span class="nt">&lt;/socket&gt;</span>
     <span class="nt">&lt;pythonpath&gt;</span>/home/web/first/deploy<span class="nt">&lt;/pythonpath&gt;</span>
     <span class="nt">&lt;module&gt;</span>django_wsgi<span class="nt">&lt;/module&gt;</span>
@@ -129,19 +129,19 @@ server <span class="o">{</span>
 
 
 <p>Рестартуем Nginx</p>
-<div class="highlight"><pre><span class="c"># /etc/init.d/nginx restart</span>
+<div class="highlight"><pre><span></span><span class="c1"># /etc/init.d/nginx restart</span>
 </pre></div>
 
 
 <p>Теперь настало время проверить корректность настроек и после запуска команды</p>
-<div class="highlight"><pre><span class="c"># uwsgi -x /home/web/first/deploy/django_nginx.xml</span>
+<div class="highlight"><pre><span></span><span class="c1"># uwsgi -x /home/web/first/deploy/django_nginx.xml</span>
 </pre></div>
 
 
 <p>Необходимо перейти по Ip адресу сервера, и мы должны увидеть «заглушку» It worked!</p>
 <p>Настроем автоматический запуск через supervisor (nano /etc/supervisor/conf.d/uwsgi_testprj.conf)</p>
-<div class="highlight"><pre><span class="o">[</span>program:uwsgi_testprj<span class="o">]</span>
-<span class="nb">command</span><span class="o">=</span>/home/web/first/deploy/uwsgi_testprj.sh
+<div class="highlight"><pre><span></span><span class="o">[</span>program:uwsgi_testprj<span class="o">]</span>
+<span class="nv">command</span><span class="o">=</span>/home/web/first/deploy/uwsgi_testprj.sh
 <span class="nv">directory</span><span class="o">=</span>/home/web/first/
 <span class="nv">autostart</span><span class="o">=</span><span class="nb">true</span>
 <span class="nv">autorestart</span><span class="o">=</span><span class="nb">true</span>
@@ -150,35 +150,32 @@ server <span class="o">{</span>
 
 
 <p>nano /home/web/first/deploy/uwsgi_testprj.sh</p>
-<div class="highlight"><pre><span class="c">#! /bin/bash</span>
+<div class="highlight"><pre><span></span><span class="ch">#! /bin/bash</span>
 <span class="nb">source</span> /home/web/first/env/bin/activate
-<span class="nb">exec </span>uwsgi -x /home/web/first/deploy/django_nginx.xml
+<span class="nb">exec</span> uwsgi -x /home/web/first/deploy/django_nginx.xml
 </pre></div>
 
 
 <p>Даем права запуск</p>
-<div class="highlight"><pre><span class="c"># chmod +x /home/web/first/deploy/uwsgi_testprj.sh</span>
+<div class="highlight"><pre><span></span><span class="c1"># chmod +x /home/web/first/deploy/uwsgi_testprj.sh</span>
 </pre></div>
 
 
 <p>Перезапускаем и проверяем</p>
-<div class="highlight"><pre><span class="c"># supervisorctl reread</span>
-<span class="c"># supervisorctl update</span>
-<span class="c"># supervisorctl start all</span>
+<div class="highlight"><pre><span></span><span class="c1"># supervisorctl reread</span>
+<span class="c1"># supervisorctl update</span>
+<span class="c1"># supervisorctl start all</span>
 </pre></div>
 
 
 <p>В админке могут не подняться стили (статические файлы) для этого прописываем в settings.py</p>
-<div class="highlight"><pre><span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="s">&quot;/home/web/first/static&quot;</span>
+<div class="highlight"><pre><span></span><span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="s2">&quot;/home/web/first/static&quot;</span>
 </pre></div>
 
 
 <p>И выполняем</p>
-<div class="highlight"><pre><span class="c">#python manage.py collectstatic</span>
-</pre></div>                </article>
-<p class="paginator">
-    Page 1 / 1
-</p>
+<div class="highlight"><pre><span></span><span class="c1">#python manage.py collectstatic</span>
+</pre></div><p>There are <a href="/django-17-nginx-uwsgi-ubuntu-1404.html#disqus_thread">comments</a>.</p>                </article>
             </aside><!-- /#featured -->
         <section id="extras" class="body">
                 <div class="blogroll">
@@ -206,21 +203,16 @@ server <span class="o">{</span>
                 </address><!-- /#about -->
 
                 <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-
-                <p><!--LiveInternet counter--><script type="text/javascript"><!--
-                    document.write("<a href='//www.liveinternet.ru/click' "+
-                    "target=_blank><img src='//counter.yadro.ru/hit?t52.6;r"+
-                    escape(document.referrer)+((typeof(screen)=="undefined")?"":
-                    ";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
-                    screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
-                    ";"+Math.random()+
-                    "' alt='' title='LiveInternet: показано число просмотров и"+
-                    " посетителей за 24 часа' "+
-                    "border='0' width='88' height='31'><\/a>")
-                    //--></script><!--/LiveInternet-->
-                </p>
-
         </footer><!-- /#contentinfo -->
 
+<script type="text/javascript">
+    var disqus_shortname = 'agfpak';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
 </body>
 </html>

@@ -32,7 +32,7 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/ajib6ept.html">ajib6ept</a>
+                By                         <a class="url fn" href="/author/agfpak.html">agfpak</a>
         </address>
 <p>In <a href="/category/zametki.html">Заметки</a>.</p>
 <p>tags: <a href="/tag/repost.html">репост</a> <a href="/tag/python-rq.html">python-rq</a> <a href="/tag/redis.html">redis</a> </p>
@@ -40,12 +40,12 @@
 <p>Столкнулся недавно с проблемой реализации асинхронной очереди задач на Python. Хотелось найти какое-нибудь простое минималистичное решение, аля написал три строчки кода и все взлетело. Celery по этой причине отпала почти сразу. Немного погуглив нашел такое решение: python-rq. В этом топике я хочу рассмотреть основные приципы работы этой очереди задач.</p>
 <h3>Установка</h3>
 <p>Ставится стандартно, так как брокером для данной очереди служит редис, ставим его:</p>
-<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install redis-server
+<div class="highlight"><pre><span></span>$ sudo apt-get install redis-server
 </pre></div>
 
 
 <p>ставим саму очередь</p>
-<div class="highlight"><pre><span class="nv">$ </span>sudo pip install rq
+<div class="highlight"><pre><span></span>$ sudo pip install rq
 </pre></div>
 
 
@@ -56,47 +56,47 @@
 <li><strong>воркер</strong> — отдельный процесс, который получает через Redis pickle-сериализованную функцию и выполняет ее.</li>
 </ul>
 <p>Воркер запускается командой</p>
-<div class="highlight"><pre><span class="nv">$ </span>rqworker
+<div class="highlight"><pre><span></span>$ rqworker
 </pre></div>
 
 
 <p>и работает на протяжении всех следующих примеров.</p>
 <h5>Пример 1</h5>
 <p>Файл main.py:</p>
-<div class="highlight"><pre><span class="c">#-- coding: utf-8 --</span>
+<div class="highlight"><pre><span></span><span class="c1">#-- coding: utf-8 --</span>
 <span class="kn">from</span> <span class="nn">rq</span> <span class="kn">import</span> <span class="n">Queue</span>
 <span class="kn">from</span> <span class="nn">redis</span> <span class="kn">import</span> <span class="n">Redis</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">sleep_</span><span class="p">):</span>
-    <span class="c"># спим sleep_ секунд и возвращаем ok</span>
+    <span class="c1"># спим sleep_ секунд и возвращаем ok</span>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s">&quot;ok&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;ok&quot;</span>
 
-<span class="c"># создаем очередь</span>
-<span class="n">q</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="s">&quot;high&quot;</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">Redis</span><span class="p">())</span>
+<span class="c1"># создаем очередь</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="s2">&quot;high&quot;</span><span class="p">,</span> <span class="n">connection</span><span class="o">=</span><span class="n">Redis</span><span class="p">())</span>
 
 
-<span class="c"># помещаем таск в очередь</span>
+<span class="c1"># помещаем таск в очередь</span>
 <span class="n">job</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
 
-<span class="c"># таск еще не успел выполниться - результата нет</span>
+<span class="c1"># таск еще не успел выполниться - результата нет</span>
 <span class="k">print</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span>
 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="c"># получили результат</span>
+<span class="c1"># получили результат</span>
 <span class="k">print</span> <span class="n">job</span><span class="o">.</span><span class="n">result</span>
 </pre></div>
 
 
 <p>Функция Queue создает очередь. В качестве параметра connection мы передали соединение с Redis’ом по умолчанию. После создания очереди мы можем помещать в нее функции, которые будут выполняться воркером. Первый параметр передаваемый в очередь — ее имя. Оно может быть произвольным. Чтобы настроить воркер на слушание именнованной очереди, просто передаем имя очереди параметром:</p>
-<div class="highlight"><pre>rqworker high q1 q2
+<div class="highlight"><pre><span></span>rqworker high q1 q2
 </pre></div>
 
 
 <p>будет слушать очереди <strong>high</strong>, <strong>q1</strong>, <strong>q2</strong></p>
 <p>Пробуем запустить таск и получаем:</p>
-<div class="highlight"><pre>stas@stas-Aspire-Z3620:~/workspace/partners/rq_test<span class="nv">$ </span>python main.py 
+<div class="highlight"><pre><span></span>stas@stas-Aspire-Z3620:~/workspace/partners/rq_test$ python main.py 
 Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
   File <span class="s2">&quot;main.py&quot;</span>, line 17, in 
     <span class="nv">job</span> <span class="o">=</span> q.enqueue<span class="o">(</span>task, 1<span class="o">)</span>
@@ -111,43 +111,43 @@ ValueError: Functions from the main module cannot be processed by workers.
 <h5>Пример 2</h5>
 <p>Перенесем код таска в другой модуль.</p>
 <p>Файл task.py</p>
-<div class="highlight"><pre><span class="c">#-- coding: utf-8 --</span>
+<div class="highlight"><pre><span></span><span class="c1">#-- coding: utf-8 --</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="k">def</span> <span class="nf">task</span><span class="p">(</span><span class="n">sleep</span><span class="p">):</span>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s">&quot;ok&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;ok&quot;</span>
 </pre></div>
 
 
 <p>Файл main.py</p>
-<div class="highlight"><pre><span class="c">#-- coding: utf-8 --</span>
+<div class="highlight"><pre><span></span><span class="c1">#-- coding: utf-8 --</span>
 <span class="kn">from</span> <span class="nn">rq</span> <span class="kn">import</span> <span class="n">Queue</span>
 <span class="kn">from</span> <span class="nn">redis</span> <span class="kn">import</span> <span class="n">Redis</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">tasks</span> <span class="kn">import</span> <span class="n">task</span>
 
-<span class="c"># создаем очередь</span>
+<span class="c1"># создаем очередь</span>
 <span class="n">q</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">(</span><span class="n">connection</span><span class="o">=</span><span class="n">Redis</span><span class="p">())</span>
 
 
-<span class="c"># помещаем таск в очередь</span>
+<span class="c1"># помещаем таск в очередь</span>
 <span class="n">j1</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
 <span class="n">j2</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
 <span class="n">j3</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
 
 
-<span class="c"># таск еще не успел выполниться - результата нет</span>
+<span class="c1"># таск еще не успел выполниться - результата нет</span>
 <span class="k">print</span> <span class="n">j1</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">j2</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">j3</span><span class="o">.</span><span class="n">result</span>
 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="c"># получили результат</span>
+<span class="c1"># получили результат</span>
 <span class="k">print</span> <span class="n">j1</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">j2</span><span class="o">.</span><span class="n">result</span><span class="p">,</span> <span class="n">j3</span><span class="o">.</span><span class="n">result</span>
 </pre></div>
 
 
 <p>Запускаем воркер и main.py.</p>
 <p>Лог воркера:</p>
-<div class="highlight"><pre><span class="o">(</span>env<span class="o">)</span>stas@stas-Aspire-Z3620:~/workspace/partners/rq_test<span class="nv">$ </span>rqworker -v
+<div class="highlight"><pre><span></span><span class="o">(</span>env<span class="o">)</span>stas@stas-Aspire-Z3620:~/workspace/partners/rq_test$ rqworker -v
 22:49:50 Registering birth of worker stas-Aspire-Z3620.10909
 22:49:50 RQ worker started, version 0.4.6
 22:49:50 
@@ -183,7 +183,7 @@ ValueError: Functions from the main module cannot be processed by workers.
 
 
 <p>Лог main.py:</p>
-<div class="highlight"><pre>stas@stas-Aspire-Z3620:~/workspace/partners/rq_test<span class="nv">$ </span>python main.py 
+<div class="highlight"><pre><span></span>stas@stas-Aspire-Z3620:~/workspace/partners/rq_test$ python main.py 
 None None None
 ok ok ok
 </pre></div>
@@ -191,7 +191,7 @@ ok ok ok
 
 <h3>Запуск нескольких воркеров</h3>
 <p>К сожалению сейчас каждый воркер работает в один поток. То есть один воркер поддерживает только одну очередь заданий. Исправил я это запуском каждого воркера в отдельном процессе:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">RQQueueManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">RQQueueManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="n">_QUEUES</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -211,7 +211,7 @@ ok ok ok
         <span class="k">if</span> <span class="n">qname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">_QUEUES</span><span class="p">:</span>
             <span class="n">cls</span><span class="o">.</span><span class="n">_QUEUES</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qname</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">QueueException</span><span class="p">(</span><span class="s">&quot;This queue already added&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">QueueException</span><span class="p">(</span><span class="s2">&quot;This queue already added&quot;</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">add_exception_handler</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
@@ -260,16 +260,16 @@ ok ok ok
 
 
 <p>Пример использования:</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">do_nothinf_exception_handler</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
-    <span class="c">#do none</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">do_nothinf_exception_handler</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="c1">#do none</span>
     <span class="k">pass</span>
 
 <span class="p">:::</span><span class="n">python</span>
-<span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s">&quot;main&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;main&quot;</span><span class="p">:</span>
     <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">add_exception_handler</span><span class="p">(</span><span class="n">do_nothinf_exception_handler</span><span class="p">)</span>
-    <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;high&quot;</span><span class="p">)</span>
-    <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;mid&quot;</span><span class="p">)</span>
-    <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;low&quot;</span><span class="p">)</span>
+    <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;high&quot;</span><span class="p">)</span>
+    <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;mid&quot;</span><span class="p">)</span>
+    <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;low&quot;</span><span class="p">)</span>
     <span class="n">RQQueueManager</span><span class="o">.</span><span class="n">as_script</span><span class="p">()</span>
 </pre></div>
 
@@ -277,14 +277,14 @@ ok ok ok
 <h3>Помещение в очередь произвольного класса</h3>
 <p>Передо мной встала задача — есть абстрактный класс Task. Каждый конерктный таск должен наследоваться от этого класса. У Task есть метод main — основной метод выполняющий все действия и метод \push_in_queue который должен помещать main текущего класса в очередь заданий.</p>
 <p>Если попробовать выполнить что то в стиле:</p>
-<div class="highlight"><pre><span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">ConcreteClass</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">q</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">ConcreteClass</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
 </pre></div>
 
 
 <p>получим ошибку pickle. Решить эту проблему получилось следующим образом:</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Task</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Task</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-<span class="n">EXECUTOR</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># должно быть перегружено</span>
+<span class="n">EXECUTOR</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c1"># должно быть перегружено</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="o">...</span>
@@ -305,7 +305,7 @@ ok ok ok
     <span class="k">return</span> <span class="n">run_concrete_executor</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="c"># doAction</span>
+    <span class="c1"># doAction</span>
 </pre></div>
 
 
@@ -341,21 +341,16 @@ ok ok ok
                 </address><!-- /#about -->
 
                 <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-
-                <p><!--LiveInternet counter--><script type="text/javascript"><!--
-                    document.write("<a href='//www.liveinternet.ru/click' "+
-                    "target=_blank><img src='//counter.yadro.ru/hit?t52.6;r"+
-                    escape(document.referrer)+((typeof(screen)=="undefined")?"":
-                    ";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
-                    screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
-                    ";"+Math.random()+
-                    "' alt='' title='LiveInternet: показано число просмотров и"+
-                    " посетителей за 24 часа' "+
-                    "border='0' width='88' height='31'><\/a>")
-                    //--></script><!--/LiveInternet-->
-                </p>
-
         </footer><!-- /#contentinfo -->
 
+<script type="text/javascript">
+    var disqus_shortname = 'agfpak';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
 </body>
 </html>

@@ -32,35 +32,35 @@
         </abbr>
 
         <address class="vcard author">
-                By                         <a class="url fn" href="/author/ajib6ept.html">ajib6ept</a>
+                By                         <a class="url fn" href="/author/agfpak.html">agfpak</a>
         </address>
 <p>In <a href="/category/zametki.html">Заметки</a>.</p>
 <p>tags: <a href="/tag/postgres.html">Postgres</a> <a href="/tag/psycopg2.html">psycopg2</a> <a href="/tag/virtualenv.html">virtualenv</a> </p>
 </footer><!-- /.post-info -->      <p><img alt="Error: You need to install postgresql-server-dev-X.Y for building a server-side extension or libpq-dev for building a client-side application" src="images/psycopg2_error.png" /></p>
 <p>Альтернативная установка psycopg2 в virtualenv для Postgres.</p>
 <p>Устанавливаем psycopg не в окружении через</p>
-<div class="highlight"><pre><span class="nv">$ </span>sudo pip install psycopg2
+<div class="highlight"><pre><span></span>$ sudo pip install psycopg2
 </pre></div>
 
 
 <p>Смотрим куда это встало</p>
-<div class="highlight"><pre><span class="nv">$ </span>sudo python -c <span class="s2">&quot;import psycopg2;print psycopg2.__file__&quot;</span>
-<span class="nv">$ </span>/usr/lib/python2.7/dist-packages/psycopg2/__init__.pyc
+<div class="highlight"><pre><span></span>$ sudo python -c <span class="s2">&quot;import psycopg2;print psycopg2.__file__&quot;</span>
+$ /usr/lib/python2.7/dist-packages/psycopg2/__init__.pyc
 </pre></div>
 
 
 <p>И копируем к себе в lib’ы в virtualenv</p>
-<div class="highlight"><pre><span class="nv">$ </span>sudo cp -r /usr/lib/python2.7/dist-packages/psycopg2  mypythonenv/lib/python2.7/site-packages/
+<div class="highlight"><pre><span></span>$ sudo cp -r /usr/lib/python2.7/dist-packages/psycopg2  mypythonenv/lib/python2.7/site-packages/
 </pre></div>
 
 
 <p>Копипастим яйцо</p>
-<div class="highlight"><pre><span class="nv">$ </span>sudo cp /usr/lib/python2.7/dist-packages/psycopg2-2.*.*.egg-info  mypythonenv/lib/python2.7/site-packages/
+<div class="highlight"><pre><span></span>$ sudo cp /usr/lib/python2.7/dist-packages/psycopg2-2.*.*.egg-info  mypythonenv/lib/python2.7/site-packages/
 </pre></div>
 
 
 <p>Еще надо будет скопировать mx</p>
-<div class="highlight"><pre><span class="nv">$ </span>sudo cp -r /usr/lib/python2.7/dist-packages/mx  mypythonenv/lib/python2.7/site-packages/
+<div class="highlight"><pre><span></span>$ sudo cp -r /usr/lib/python2.7/dist-packages/mx  mypythonenv/lib/python2.7/site-packages/
 </pre></div>
     </div><!-- /.entry-content -->
 
@@ -92,21 +92,16 @@
                 </address><!-- /#about -->
 
                 <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-
-                <p><!--LiveInternet counter--><script type="text/javascript"><!--
-                    document.write("<a href='//www.liveinternet.ru/click' "+
-                    "target=_blank><img src='//counter.yadro.ru/hit?t52.6;r"+
-                    escape(document.referrer)+((typeof(screen)=="undefined")?"":
-                    ";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
-                    screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
-                    ";"+Math.random()+
-                    "' alt='' title='LiveInternet: показано число просмотров и"+
-                    " посетителей за 24 часа' "+
-                    "border='0' width='88' height='31'><\/a>")
-                    //--></script><!--/LiveInternet-->
-                </p>
-
         </footer><!-- /#contentinfo -->
 
+<script type="text/javascript">
+    var disqus_shortname = 'agfpak';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
 </body>
 </html>
